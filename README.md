@@ -1,7 +1,7 @@
 # Rebalanceo de Bicicletas en estaciones de MiBici en 2023
 Revisa la presentación del proyecto en el archivo
 
-    presentacion_delproyecto.html
+    presentacion_del_proyecto.html
 
 ## App
 
