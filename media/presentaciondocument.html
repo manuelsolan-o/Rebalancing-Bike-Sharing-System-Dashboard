@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Manuel Solano">
+
+<title>Rebalanceo de Bicicletas en estaciones de MiBici en 2023</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="presentaciondocument_files/libs/clipboard/clipboard.min.js"></script>
+<script src="presentaciondocument_files/libs/quarto-html/quarto.js"></script>
+<script src="presentaciondocument_files/libs/quarto-html/popper.min.js"></script>
+<script src="presentaciondocument_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="presentaciondocument_files/libs/quarto-html/anchor.min.js"></script>
+<link href="presentaciondocument_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="presentaciondocument_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="presentaciondocument_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="presentaciondocument_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="presentaciondocument_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Rebalanceo de Bicicletas en estaciones de MiBici en 2023</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Manuel Solano </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div style="text-align: center;">
+<p><img src="bicis.gif" alt="BID"></p>
+</div>
+<small> <small>
+<p align="center">
+<em> Ilustración de Luis Eduardo Luna, 2015 </em>
+</p>
+</small></small><p><small><small></small> </small></p>
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section"></h2>
+</section>
+<section id="sobre-mí" class="level2">
+<h2 class="anchored" data-anchor-id="sobre-mí">Sobre mí</h2>
+<div class="columns">
+<div class="column" style="width:30%;">
+<p><img src="foto2.png" class="img-fluid"></p>
+<div style="text-align: center;">
+
+</div>
+</div><div class="column" style="width:0%;">
+
+</div><div class="column" style="width:70%;">
+<section id="hola-soy-manuel-solano-hehim" class="level3" style="text-align: right;">
+<h3 class="anchored" data-anchor-id="hola-soy-manuel-solano-hehim">Hola, soy Manuel Solano 🤟 <sub>(he/him)</sub></h3>
+<p><small> <small> <em>Ingeniería en Ciencia de Datos y Matemáticas en <a href="https://tec.mx/es">Instituto Tecnológico y de Estudios Superiores de Monterrey</a></em> <img src="tec.svg" alt="BID" width="20" height="20"></small></small></p><small><small>
+<p><em>Data Science Intern en <a href="https://github.com/EL-BID/URSA">URSA</a></em> <img src="bid_logo.jpeg" alt="BID" width="35" height="35"></p>
+</small></small></section><small><small>
+</small></small><p><small><small></small> </small></p>
+<p><small></small></p><small>
+<ul>
+<li><p>Desarrollo de mejores ciudades con ciencia de datos</p></li>
+<li><p>Transporte</p></li>
+</ul>
+</small><p><small></small></p>
+</div>
+</div>
+<div style="text-align: right;">
+<p><small> <small></small></small></p><small><small>
+<p><img src="outlook.png" alt="BID" width="15" height="15"> A00572208@tec.mx <img src="git.png" alt="BID" width="15" height="15"> <a href="github.com/manuelsolan-o">github.com/manuelsolan-o</a> <img src="lk.png" alt="BID" width="15" height="15"> <a href="linkedin.com/in/manuelsolan-o">linkedin.com/in/manuelsolan-o</a></p>
+</small></small><p><small><small></small> </small></p>
+</div>
+</section>
+<section id="contexto" class="level2">
+<h2 class="anchored" data-anchor-id="contexto">Contexto</h2>
+<div class="columns">
+<div class="column" style="width:35%;">
+<p>El servicio de MiBici, es un servicio de transporte público basado en una red de bicicletas compartidas en el Área Metropolitana de Guadalajara</p>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:60%;">
+<div style="text-align: center;">
+<p><img src="mapa.png" alt="BID" width="500" height="250"></p>
+</div>
+<small> <small>
+<p align="center">
+<em> Elaboración propia con datos de <a href="https://www.mibici.net/">MiBici</a> </em>
+</p>
+</small></small><p><small><small></small> </small></p>
+</div>
+</div>
+</section>
+<section id="cuál-es-la-problemática-que-intento-resolver" class="level2">
+<h2 class="anchored" data-anchor-id="cuál-es-la-problemática-que-intento-resolver">¿Cuál es la problemática que intento resolver?</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<ul>
+<li>Objetivo de los Sistemas de Bicicletas Compartidas
+<ul>
+<li>Mejorar las conexiones dentro de las redes de transporte público.</li>
+<li>Ampliar la cobertura de transporte urbano.</li>
+</ul></li>
+<li>Claves para el éxito de los Sistemas de Bicicletas Compartidas
+<ul>
+<li>Eficiencia de Rebalanceo</li>
+</ul></li>
+<li>Desafíos en el Rebalanceo de Bicicletas:
+<ul>
+<li>Predicción de la Demanda</li>
+<li>Planificación de rutas</li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:40%;">
+<p><img src="reba.jpg" alt="BID" width="380" height="250"></p>
+<small> <small>
+<p align="center">
+<em> Rebalanceo de bicicletas del servicio <a href="https://ride.citibikenyc.com/blog/rebalancing-the-citi-bike-system">Citi Bike</a> en la ciudad de NY. </em>
+</p>
+</small></small><p><small><small></small> </small></p>
+</div>
+</div>
+</section>
+<section id="enfoque-del-proyecto" class="level2">
+<h2 class="anchored" data-anchor-id="enfoque-del-proyecto">Enfoque del proyecto</h2>
+<ul>
+<li><p>La predicción de demanda de bicicletas</p></li>
+<li><p>Asignación de bicicletas por estación</p></li>
+</ul>
+</section>
+<section id="metodología" class="level2">
+<h2 class="anchored" data-anchor-id="metodología">Metodología</h2>
+<section id="dramatización" class="level3" style="text-align: center;">
+<h3 class="anchored" data-anchor-id="dramatización">Dramatización</h3>
+<section id="estación-49-c.-robles-gil-av.-vallarta" class="level4">
+<h4 class="anchored" data-anchor-id="estación-49-c.-robles-gil-av.-vallarta">Estación 49 C. Robles Gil / Av. Vallarta</h4>
+<p><img src="drama.png" alt="BID"></p>
+</section>
+</section>
+<section id="demanda-positva" class="level3">
+<h3 class="anchored" data-anchor-id="demanda-positva">Demanda positva</h3>
+<div style="text-align: center;">
+<p><img src="dema1.png" alt="BID" width="500" height="250"></p>
+</div>
+</section>
+<section id="demanda-negativa" class="level3">
+<h3 class="anchored" data-anchor-id="demanda-negativa">Demanda negativa</h3>
+<div style="text-align: center;">
+<p><img src="dema1.png" alt="BID" width="500" height="250"></p>
+</div>
+</section>
+<section id="propuesta-de-horarios-de-rebalanceo" class="level3">
+<h3 class="anchored" data-anchor-id="propuesta-de-horarios-de-rebalanceo">Propuesta de horarios de rebalanceo</h3>
+<div style="text-align: center;">
+<p><img src="dema3.png" alt="BID" width="500" height="250"></p>
+</div>
+<div style="text-align: center;">
+<p><img src="dema4.png" alt="BID" width="500" height="250"></p>
+</div>
+</section>
+<section id="centrémonos-en-el-primer-periodo" class="level3">
+<h3 class="anchored" data-anchor-id="centrémonos-en-el-primer-periodo">Centrémonos en el primer periodo</h3>
+<div class="columns">
+<div class="column" style="width:47.5%;">
+<p><img src="dema5.png" alt="BID" width="250" height="300"></p>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:47.5%;">
+<p><img src="dema6.png" alt="BID" width="250" height="300"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="algoritmo-de-rebalanceo" class="level2">
+<h2 class="anchored" data-anchor-id="algoritmo-de-rebalanceo">Algoritmo de rebalanceo</h2>
+<div class="columns">
+<div class="column" style="width:47.5%;">
+<p><img src="dema5.png" alt="BID" width="250" height="300"></p>
+<p>[0 , 0 , 1 , 4, 5, 1, 3, 7]</p>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:47.5%;">
+<p><img src="dema6.png" alt="BID" width="250" height="300"></p>
+<p>[0, 0, 1, 2, 1, 8, 2, 6]</p>
+</div>
+</div>
+<p>Hacemos la diferencia de demanda positiva y demanda negativa para sacar la “demanda total”:</p>
+<p>[0 , 0 , 1 , 4, 5, 1, 3, 7] - [0 , 0 , 1 , 2 , 1 , 8 , 2 , 6] = [0, 0, 0, 2, 4, -7, 1, 1]</p>
+<section id="section-1" class="level3">
+<h3 class="anchored" data-anchor-id="section-1">[0, 0, 0, 2, 4, -7, 1, 1]</h3>
+</section>
+<section id="se-realiza-para-todos-los-periodos" class="level3">
+<h3 class="anchored" data-anchor-id="se-realiza-para-todos-los-periodos">Se realiza para todos los periodos</h3>
+<div style="text-align: center;">
+<p><img src="periodos.png" alt="BID"></p>
+</div>
+</section>
+</section>
+<section id="predecir-la-demanda-de-bicicletas-por-estación" class="level2">
+<h2 class="anchored" data-anchor-id="predecir-la-demanda-de-bicicletas-por-estación">Predecir la demanda de bicicletas por estación</h2>
+<div class="columns">
+<div class="column" style="width:47.5%;">
+<section id="random-forest-árboles-de-regresión" class="level3">
+<h3 class="anchored" data-anchor-id="random-forest-árboles-de-regresión">Random Forest (Árboles de regresión)</h3>
+<ul>
+<li><p>Nodos y Ramas</p></li>
+<li><p>División del Conjunto de Datos</p></li>
+<li><p>Criterio de División</p></li>
+<li><p>Construcción Recursiva</p></li>
+<li><p>Nodos Terminales (Hojas)</p></li>
+</ul>
+</section>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:47.5%;">
+<p><img src="CART.png" alt="BID"> <small> <small> <em>Aprendizaje basado en árboles de decisión, Wikipedia</em> </small> </small></p>
+</div>
+</div>
+<div class="columns">
+<div class="column" style="width:47.5%;">
+<section id="random-forest-árboles-de-regresión-1" class="level3">
+<h3 class="anchored" data-anchor-id="random-forest-árboles-de-regresión-1">Random Forest (Árboles de regresión)</h3>
+<p>Extracción de características:</p>
+<ul>
+<li>Mes</li>
+<li>Día</li>
+<li>Hora</li>
+</ul>
+<p>Con información de 2020 a 2022 para predecir 2023</p>
+</section>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:47.5%;">
+<p><img src="arbol.png" alt="BID" width="380" height="250"></p>
+</div>
+</div>
+</section>
+<section id="comparación-de-resultados" class="level2">
+<h2 class="anchored" data-anchor-id="comparación-de-resultados">Comparación de Resultados</h2>
+<div style="text-align: center;">
+<p><img src="resultados1.png" alt="BID" width="600" height="250"></p>
+</div>
+<div style="text-align: center;">
+<p><img src="resultados2.png" alt="BID" width="600" height="250"></p>
+</div>
+</section>
+<section id="pasos-a-futuro" class="level2">
+<h2 class="anchored" data-anchor-id="pasos-a-futuro">Pasos a Futuro</h2>
+<section id="modelos-de-machine-learning-para-series-de-tiempo" class="level3">
+<h3 class="anchored" data-anchor-id="modelos-de-machine-learning-para-series-de-tiempo">Modelos de machine learning para series de tiempo</h3>
+</section>
+<section id="redes-neuronales-recurrentes" class="level3">
+<h3 class="anchored" data-anchor-id="redes-neuronales-recurrentes">Redes neuronales recurrentes</h3>
+<p><img src="redneuronal.png" alt="BID" width="600" height="250"></p>
+<p><small> <small> <em>Predicciones de pasajeros en una aerolinea</em> </small> </small></p>
+</section>
+</section>
+<section id="prototipo-de-software" class="level2">
+<h2 class="anchored" data-anchor-id="prototipo-de-software">Prototipo de software</h2>
+<section id="rebalancing-bike-sharing-system-app" class="level3">
+<h3 class="anchored" data-anchor-id="rebalancing-bike-sharing-system-app">Rebalancing Bike Sharing System App</h3>
+<div style="text-align: center;">
+<p><img src="biciapp.gif" alt="BID" width="600" height="350"></p>
+</div>
+</section>
+</section>
+<section id="guardar-columnas" class="level2">
+<h2 class="anchored" data-anchor-id="guardar-columnas">guardar columnas</h2>
+<div class="columns">
+<div class="column" style="width:35%;">
+
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:60%;">
+
+</div>
+</div>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

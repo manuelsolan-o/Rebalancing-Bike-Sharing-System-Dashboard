@@ -1,0 +1,319 @@
+---
+title: "Rebalanceo de Bicicletas en estaciones de MiBici en 2023"
+author: "Manuel Solano"
+---
+<div style="text-align: center;">
+
+<img src="bicis.gif" alt="BID"/>
+
+</div>
+<small> <small>
+<p align="center">
+  <em> Ilustración de Luis Eduardo Luna, 2015 </em>
+</p>
+</small> </small>
+
+##
+## Sobre mí
+
+::: columns
+::: {.column width="30%"}
+![](foto2.png)
+
+<div style="text-align: center;">
+
+ </div>
+
+:::
+
+::: {.column width="0%"}
+
+:::
+
+::: {.column width="70%"}
+<div style="text-align: right;">
+### Hola, soy Manuel Solano 🤟 <sub>(he/him)</sub>
+<small> <small>
+*Ingeniería en Ciencia de Datos y Matemáticas en [Instituto Tecnológico y de Estudios Superiores de Monterrey](https://tec.mx/es)*           <img src="tec.svg" alt="BID" width="20" height="20"/>
+
+*Data Science Intern en [URSA](https://github.com/EL-BID/URSA)* <img src="bid_logo.jpeg" alt="BID" width="35" height="35"/> 
+
+</div>
+
+</small> </small>
+
+<small>
+
+* Desarrollo de mejores ciudades con ciencia de datos
+
+* Transporte
+
+</small>
+
+:::
+:::
+<div style="text-align: right;">
+<small> <small>
+
+ <img src="outlook.png" alt="BID" width="15" height="15"/> A00572208@tec.mx  <img src="git.png" alt="BID" width="15" height="15"/>   [github.com/manuelsolan-o](github.com/manuelsolan-o) <img src="lk.png" alt="BID"  width="15" height="15"/>  [linkedin.com/in/manuelsolan-o](linkedin.com/in/manuelsolan-o)
+ 
+ </small> </small>
+</div>
+
+
+## Contexto
+
+::: columns
+::: {.column width="35%"}
+El servicio de MiBici, es un servicio de transporte público basado en una red de bicicletas compartidas en el Área Metropolitana de Guadalajara
+
+:::
+
+::: {.column width="5%"}
+
+:::
+
+::: {.column width="60%"}
+
+<div style="text-align: center;">
+
+<img src="mapa.png" alt="BID" width="500" height="250"/>
+
+</div>
+<small> <small>
+<p align="center">
+  <em> Elaboración propia con datos de [MiBici](https://www.mibici.net/) </em>
+</p>
+</small> </small>
+
+:::
+:::
+
+## ¿Cuál es la problemática que intento resolver?
+::: columns
+::: {.column width="55%"}
+
+* Objetivo de los Sistemas de Bicicletas Compartidas
+  * Mejorar las conexiones dentro de las redes de transporte público.
+  * Ampliar la cobertura de transporte urbano.
+  
+* Claves para el éxito de los Sistemas de Bicicletas Compartidas
+  * Eficiencia de Rebalanceo
+  
+* Desafíos en el Rebalanceo de Bicicletas:
+  * Predicción de la Demanda
+  * Planificación de rutas
+  
+:::
+
+::: {.column width="5%"}
+
+:::
+
+::: {.column width="40%"}
+<img src="reba.jpg" alt="BID" width="380" height="250"/>
+
+<small> <small>
+<p align="center">
+  <em> Rebalanceo de bicicletas del servicio [Citi Bike](https://ride.citibikenyc.com/blog/rebalancing-the-citi-bike-system) en la ciudad de NY. </em>
+</p>
+</small> </small>
+
+:::
+:::
+
+## Enfoque del proyecto
+
+* La predicción de demanda de bicicletas
+
+
+* Asignación de bicicletas por estación
+
+
+## Metodología
+
+<div style="text-align: center;">
+
+### Dramatización
+#### Estación 49 C. Robles Gil / Av. Vallarta
+
+<img src="drama.png" alt="BID"/>
+</div>
+
+
+### Demanda positva
+<div style="text-align: center;">
+
+<img src="dema1.png" alt="BID" width="500" height="250"/>
+
+</div>
+
+### Demanda negativa
+<div style="text-align: center;">
+
+<img src="dema1.png" alt="BID" width="500" height="250"/>
+
+</div>
+
+### Propuesta de horarios de rebalanceo
+<div style="text-align: center;">
+
+<img src="dema3.png" alt="BID" width="500" height="250"/>
+
+</div>
+
+<div style="text-align: center;">
+
+<img src="dema4.png" alt="BID" width="500" height="250"/>
+
+</div>
+
+### Centrémonos en el primer periodo
+
+::: columns
+::: {.column width="47.5%"}
+
+<img src="dema5.png" alt="BID" width="250" height="300"/>
+:::
+
+::: {.column width="5%"}
+
+:::
+
+::: {.column width="47.5%"}
+
+<img src="dema6.png" alt="BID" width="250" height="300"/>
+:::
+:::
+
+## Algoritmo de rebalanceo
+
+::: columns
+::: {.column width="47.5%"}
+
+<img src="dema5.png" alt="BID" width="250" height="300"/>
+
+[0 , 0 , 1 , 4,  5,  1,  3,  7]
+
+:::
+
+::: {.column width="5%"}
+
+:::
+
+::: {.column width="47.5%"}
+
+<img src="dema6.png" alt="BID" width="250" height="300"/>
+
+[0, 0, 1, 2, 1, 8, 2, 6]
+:::
+:::
+
+Hacemos la diferencia de demanda positiva y demanda negativa para sacar la "demanda total":
+
+[0 , 0 , 1 , 4,  5,  1,  3,  7] - [0 , 0 , 1 , 2 , 1 , 8 , 2 , 6] = [0, 0, 0, 2, 4, -7, 1, 1]
+
+
+### [0, 0, 0, 2, 4, -7, 1, 1]
+
+
+### Se realiza para todos los periodos
+<div style="text-align: center;">
+<img src="periodos.png" alt="BID"/>
+</div>
+
+
+## Predecir la demanda de bicicletas por estación
+
+::: columns
+::: {.column width="47.5%"}
+
+### Random Forest (Árboles de regresión)
+
+* Nodos y Ramas
+
+* División del Conjunto de Datos
+
+* Criterio de División
+
+* Construcción Recursiva
+
+* Nodos Terminales (Hojas)
+
+:::
+
+::: {.column width="5%"}
+
+:::
+
+::: {.column width="47.5%"}
+<img src="CART.png" alt="BID" />
+<small> <small> 
+*Aprendizaje basado en árboles de decisión, Wikipedia*
+</small> </small>
+:::
+:::
+
+::: columns
+::: {.column width="47.5%"}
+### Random Forest (Árboles de regresión)
+
+Extracción de características:
+
+  * Mes
+  * Día
+  * Hora
+
+Con información de 2020 a 2022 para predecir 2023
+
+:::
+
+::: {.column width="5%"}
+
+:::
+
+::: {.column width="47.5%"}
+
+<img src="arbol.png" alt="BID" width="380" height="250"/>
+
+:::
+:::
+
+## Comparación de Resultados
+
+<div style="text-align: center;">
+
+<img src="resultados1.png" alt="BID" width="600" height="250"/>
+
+
+
+</div>
+
+<div style="text-align: center;">
+
+<img src="resultados2.png" alt="BID" width="600" height="250"/>
+
+</div>
+
+## Pasos a Futuro
+
+### Modelos de machine learning para series de tiempo
+
+
+
+### Redes neuronales recurrentes
+<img src="redneuronal.png" alt="BID" width="600" height="250"/>
+
+<small> <small> 
+*Predicciones de pasajeros en una aerolinea*
+</small> </small>
+
+## Prototipo de software
+
+Repositorio: Rebalancing Bike Sharing System App 
+
+<div style="text-align: center;">
+
+<img src="biciapp.gif" alt="BID" width="600" height="350"/>
+
+</div>
