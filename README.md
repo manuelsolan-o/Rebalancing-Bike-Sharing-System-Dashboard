@@ -1,7 +1,7 @@
 # Rebalancing Bike Sharing System Dashboard
 Revisa la presentación del proyecto en el archivo
 
-    presentacion_del_proyecto.html
+    media/presentacion_del_proyecto.html
 
 ## Contexto
 El servicio de MiBici, es un servicio de transporte público basado en una red de bicicletas compartidas en el Área Metropolitana de Guadalajara
