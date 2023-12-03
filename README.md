@@ -111,7 +111,7 @@ Con información de 2020 a 2022 para predecir 2023
 ## Prototipo de software
 
 <p align="center">
-<img src="images/mibiciapp.gif" alt="gifapp">
+<img src="media/biciapp.gif" alt="gifapp">
 </p>
 
 ## Instalación
