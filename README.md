@@ -1,4 +1,4 @@
-# Rebalanceo de Bicicletas en estaciones de MiBici en 2023
+# Rebalancing Bike Sharing System Dashboard
 Revisa la presentación del proyecto en el archivo
 
     presentacion_del_proyecto.html
